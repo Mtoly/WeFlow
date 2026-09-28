@@ -40,11 +40,6 @@
 | macOS | Apple Silicon（M 系列，arm64） | `.dmg` |
 | Linux | x64 设备（amd64） | `.AppImage`、`.tar.gz` |
 
-## 快速开始
-
-若你只想使用成品版本，可前往 [Releases](https://github.com/hicccc77/WeFlow/releases) 下载并安装。
-
-ArchLinux 用户可以选择 `yay -S weflow` 快速安装
 
 ## 详细功能清单
 
