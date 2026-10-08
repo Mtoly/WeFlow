@@ -1,0 +1,38 @@
+name: WCDB compatibility
+
+on:
+  pull_request:
+    paths:
+      - 'electron/services/wcdbCore.ts'
+      - 'electron/utils/pathUtils.ts'
+      - 'scripts/check-wcdb-optional-exports.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/wcdb-compatibility.yml'
+  push:
+    paths:
+      - 'electron/services/wcdbCore.ts'
+      - 'electron/utils/pathUtils.ts'
+      - 'scripts/check-wcdb-optional-exports.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/wcdb-compatibility.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - run: npm run test:wcdb
+      - run: npm run typecheck

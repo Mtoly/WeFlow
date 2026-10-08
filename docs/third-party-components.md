@@ -13,11 +13,13 @@ WeFlow 不再内置任何用于读取/解密本地数据的原生组件。以下
 
 加载流程（见 `electron/services/wcdbCore.ts` 的 `initialize()`）：
 1. `koffi.load(wcdbLibPath)`。
-2. 依次尝试绑定下列导出函数；某个符号不存在时该功能会被跳过（返回 `null`），不影响其余功能。
-   第一个必须存在的函数是 `wcdb_open_account`，其余按需实现即可。
+2. 依次尝试绑定下列导出函数；可选符号不存在时该功能会被跳过（返回 `null`），不影响其余功能。
+   `wcdb_init`、`wcdb_shutdown`、`wcdb_open_account`、`wcdb_close_account` 和
+   `wcdb_free_string` 必须存在，用于初始化、账号生命周期和返回字符串的释放；
+   查询、统计、媒体、日志等功能接口按需实现即可。
 
 完整函数签名列表（`int32` 返回值均为状态码，`0` 表示成功；`_Out_ void** outJson` 类参数
-通过 `wcdb_free_string` 释放调用方分配的字符串内存）：
+由组件分配字符串内存，调用方通过 `wcdb_free_string` 释放）：
 
 ```
 int32 wcdb_open_account(const char* path, const char* key, _Out_ int64* handle)
@@ -117,8 +119,10 @@ void  wcdb_cloud_stop()
 void  VerifyUser(int64 hwnd, const char* message, _Out_ char* outResult, int maxLen)
 ```
 
-`wcdb_open_account` 之外全部可选：缺失的符号对应功能会在应用里表现为"不可用"，不影响
-其他已实现的功能。JSON 载荷/出参的字段命名可参照 `electron/services/wcdbCore.ts` 里
+上述五个生命周期与内存管理接口之外均为可选：缺失的符号对应功能会在应用里表现为"不可用"，
+不影响其他已实现的功能。消息游标需要同时提供 `wcdb_open_message_cursor`、
+`wcdb_fetch_message_batch` 和 `wcdb_close_message_cursor`，以保证已打开的游标可以读取和释放。
+JSON 载荷/出参的字段命名可参照 `electron/services/wcdbCore.ts` 里
 每个函数调用点前后对返回值的解析逻辑。
 
 ## 2. 媒体解密插件（`imageNativeAddonPath`）
