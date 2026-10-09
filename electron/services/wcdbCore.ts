@@ -802,6 +802,14 @@ export class WcdbCore {
     return counts
   }
 
+  private bindOptionalExport(signature: string): any {
+    try {
+      return this.lib.func(signature)
+    } catch {
+      return null
+    }
+  }
+
   /**
    * 初始化 WCDB
    */
@@ -919,7 +927,7 @@ export class WcdbCore {
       this.wcdbFreeString = this.lib.func('void wcdb_free_string(void* ptr)')
 
       // wcdb_status wcdb_get_sessions(wcdb_handle handle, char** out_json)
-      this.wcdbGetSessions = this.lib.func('int32 wcdb_get_sessions(int64 handle, _Out_ void** outJson)')
+      this.wcdbGetSessions = this.bindOptionalExport('int32 wcdb_get_sessions(int64 handle, _Out_ void** outJson)')
 
       // wcdb_status wcdb_mark_all_sessions_read(wcdb_handle handle, char** out_error)
       try {
@@ -936,22 +944,22 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_get_messages(wcdb_handle handle, const char* username, int32_t limit, int32_t offset, char** out_json)
-      this.wcdbGetMessages = this.lib.func('int32 wcdb_get_messages(int64 handle, const char* username, int32 limit, int32 offset, _Out_ void** outJson)')
+      this.wcdbGetMessages = this.bindOptionalExport('int32 wcdb_get_messages(int64 handle, const char* username, int32 limit, int32 offset, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_message_count(wcdb_handle handle, const char* username, int32_t* out_count)
-      this.wcdbGetMessageCount = this.lib.func('int32 wcdb_get_message_count(int64 handle, const char* username, _Out_ int32* outCount)')
+      this.wcdbGetMessageCount = this.bindOptionalExport('int32 wcdb_get_message_count(int64 handle, const char* username, _Out_ int32* outCount)')
 
       // wcdb_status wcdb_get_message_by_svrid(wcdb_handle handle, const char* session_id, const char* svrid, char** out_json)
-      this.wcdbGetMessageByServerId = this.lib.func('int32 wcdb_get_message_by_svrid(int64 handle, const char* sessionId, const char* svrid, _Out_ void** outJson)')
+      this.wcdbGetMessageByServerId = this.bindOptionalExport('int32 wcdb_get_message_by_svrid(int64 handle, const char* sessionId, const char* svrid, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_display_names(wcdb_handle handle, const char* usernames_json, char** out_json)
-      this.wcdbGetDisplayNames = this.lib.func('int32 wcdb_get_display_names(int64 handle, const char* usernamesJson, _Out_ void** outJson)')
+      this.wcdbGetDisplayNames = this.bindOptionalExport('int32 wcdb_get_display_names(int64 handle, const char* usernamesJson, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_avatar_urls(wcdb_handle handle, const char* usernames_json, char** out_json)
-      this.wcdbGetAvatarUrls = this.lib.func('int32 wcdb_get_avatar_urls(int64 handle, const char* usernamesJson, _Out_ void** outJson)')
+      this.wcdbGetAvatarUrls = this.bindOptionalExport('int32 wcdb_get_avatar_urls(int64 handle, const char* usernamesJson, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_group_member_count(wcdb_handle handle, const char* chatroom_id, int32_t* out_count)
-      this.wcdbGetGroupMemberCount = this.lib.func('int32 wcdb_get_group_member_count(int64 handle, const char* chatroomId, _Out_ int32* outCount)')
+      this.wcdbGetGroupMemberCount = this.bindOptionalExport('int32 wcdb_get_group_member_count(int64 handle, const char* chatroomId, _Out_ int32* outCount)')
 
       // wcdb_status wcdb_get_group_member_counts(wcdb_handle handle, const char* chatroom_ids_json, char** out_json)
       try {
@@ -961,7 +969,7 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_get_group_members(wcdb_handle handle, const char* chatroom_id, char** out_json)
-      this.wcdbGetGroupMembers = this.lib.func('int32 wcdb_get_group_members(int64 handle, const char* chatroomId, _Out_ void** outJson)')
+      this.wcdbGetGroupMembers = this.bindOptionalExport('int32 wcdb_get_group_members(int64 handle, const char* chatroomId, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_group_nicknames(wcdb_handle handle, const char* chatroom_id, char** out_json)
       try {
@@ -971,13 +979,13 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_get_message_tables(wcdb_handle handle, const char* session_id, char** out_json)
-      this.wcdbGetMessageTables = this.lib.func('int32 wcdb_get_message_tables(int64 handle, const char* sessionId, _Out_ void** outJson)')
+      this.wcdbGetMessageTables = this.bindOptionalExport('int32 wcdb_get_message_tables(int64 handle, const char* sessionId, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_message_meta(wcdb_handle handle, const char* db_path, const char* table_name, int32_t limit, int32_t offset, char** out_json)
-      this.wcdbGetMessageMeta = this.lib.func('int32 wcdb_get_message_meta(int64 handle, const char* dbPath, const char* tableName, int32 limit, int32 offset, _Out_ void** outJson)')
+      this.wcdbGetMessageMeta = this.bindOptionalExport('int32 wcdb_get_message_meta(int64 handle, const char* dbPath, const char* tableName, int32 limit, int32 offset, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_contact(wcdb_handle handle, const char* username, char** out_json)
-      this.wcdbGetContact = this.lib.func('int32 wcdb_get_contact(int64 handle, const char* username, _Out_ void** outJson)')
+      this.wcdbGetContact = this.bindOptionalExport('int32 wcdb_get_contact(int64 handle, const char* username, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_contact_status(wcdb_handle handle, const char* usernames_json, char** out_json)
       try {
@@ -1013,10 +1021,10 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_get_message_table_stats(wcdb_handle handle, const char* session_id, char** out_json)
-      this.wcdbGetMessageTableStats = this.lib.func('int32 wcdb_get_message_table_stats(int64 handle, const char* sessionId, _Out_ void** outJson)')
+      this.wcdbGetMessageTableStats = this.bindOptionalExport('int32 wcdb_get_message_table_stats(int64 handle, const char* sessionId, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_aggregate_stats(wcdb_handle handle, const char* session_ids_json, int32_t begin_timestamp, int32_t end_timestamp, char** out_json)
-      this.wcdbGetAggregateStats = this.lib.func('int32 wcdb_get_aggregate_stats(int64 handle, const char* sessionIdsJson, int32 begin, int32 end, _Out_ void** outJson)')
+      this.wcdbGetAggregateStats = this.bindOptionalExport('int32 wcdb_get_aggregate_stats(int64 handle, const char* sessionIdsJson, int32 begin, int32 end, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_available_years(wcdb_handle handle, const char* session_ids_json, char** out_json)
       try {
@@ -1075,7 +1083,7 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_open_message_cursor(wcdb_handle handle, const char* session_id, int32_t batch_size, int32_t ascending, int32_t begin_timestamp, int32_t end_timestamp, wcdb_cursor* out_cursor)
-      this.wcdbOpenMessageCursor = this.lib.func('int32 wcdb_open_message_cursor(int64 handle, const char* sessionId, int32 batchSize, int32 ascending, int32 beginTimestamp, int32 endTimestamp, _Out_ int64* outCursor)')
+      this.wcdbOpenMessageCursor = this.bindOptionalExport('int32 wcdb_open_message_cursor(int64 handle, const char* sessionId, int32 batchSize, int32 ascending, int32 beginTimestamp, int32 endTimestamp, _Out_ int64* outCursor)')
 
       // Optional on older platform DLLs. It changes only the projection of the
       // cursor that was just opened; it never allocates another cursor.
@@ -1086,19 +1094,16 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_fetch_message_batch(wcdb_handle handle, wcdb_cursor cursor, char** out_json, int32_t* out_has_more)
-      this.wcdbFetchMessageBatch = this.lib.func('int32 wcdb_fetch_message_batch(int64 handle, int64 cursor, _Out_ void** outJson, _Out_ int32* outHasMore)')
+      this.wcdbFetchMessageBatch = this.bindOptionalExport('int32 wcdb_fetch_message_batch(int64 handle, int64 cursor, _Out_ void** outJson, _Out_ int32* outHasMore)')
 
       // wcdb_status wcdb_close_message_cursor(wcdb_handle handle, wcdb_cursor cursor)
-      this.wcdbCloseMessageCursor = this.lib.func('int32 wcdb_close_message_cursor(int64 handle, int64 cursor)')
-
-      // wcdb_status wcdb_get_logs(char** out_json)
-      this.wcdbGetLogs = this.lib.func('int32 wcdb_get_logs(_Out_ void** outJson)')
+      this.wcdbCloseMessageCursor = this.bindOptionalExport('int32 wcdb_close_message_cursor(int64 handle, int64 cursor)')
 
       // wcdb_status wcdb_exec_query(wcdb_handle handle, const char* db_kind, const char* db_path, const char* sql, char** out_json)
-      this.wcdbExecQuery = this.lib.func('int32 wcdb_exec_query(int64 handle, const char* kind, const char* path, const char* sql, _Out_ void** outJson)')
+      this.wcdbExecQuery = this.bindOptionalExport('int32 wcdb_exec_query(int64 handle, const char* kind, const char* path, const char* sql, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_emoticon_cdn_url(wcdb_handle handle, const char* db_path, const char* md5, char** out_url)
-      this.wcdbGetEmoticonCdnUrl = this.lib.func('int32 wcdb_get_emoticon_cdn_url(int64 handle, const char* dbPath, const char* md5, _Out_ void** outUrl)')
+      this.wcdbGetEmoticonCdnUrl = this.bindOptionalExport('int32 wcdb_get_emoticon_cdn_url(int64 handle, const char* dbPath, const char* md5, _Out_ void** outUrl)')
 
       // wcdb_status wcdb_get_emoticon_caption(wcdb_handle handle, const char* db_path, const char* md5, char** out_caption)
       try {
@@ -1117,13 +1122,13 @@ export class WcdbCore {
       }
 
       // wcdb_status wcdb_list_message_dbs(wcdb_handle handle, char** out_json)
-      this.wcdbListMessageDbs = this.lib.func('int32 wcdb_list_message_dbs(int64 handle, _Out_ void** outJson)')
+      this.wcdbListMessageDbs = this.bindOptionalExport('int32 wcdb_list_message_dbs(int64 handle, _Out_ void** outJson)')
 
       // wcdb_status wcdb_list_media_dbs(wcdb_handle handle, char** out_json)
-      this.wcdbListMediaDbs = this.lib.func('int32 wcdb_list_media_dbs(int64 handle, _Out_ void** outJson)')
+      this.wcdbListMediaDbs = this.bindOptionalExport('int32 wcdb_list_media_dbs(int64 handle, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_message_by_id(wcdb_handle handle, const char* session_id, int32 local_id, char** out_json)
-      this.wcdbGetMessageById = this.lib.func('int32 wcdb_get_message_by_id(int64 handle, const char* sessionId, int32 localId, _Out_ void** outJson)')
+      this.wcdbGetMessageById = this.bindOptionalExport('int32 wcdb_get_message_by_id(int64 handle, const char* sessionId, int32 localId, _Out_ void** outJson)')
 
       // wcdb_status wcdb_get_db_status(wcdb_handle handle, char** out_json)
       try {
@@ -2004,6 +2009,7 @@ export class WcdbCore {
       this.writeLog('getSessions skipped: not connected')
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetSessions) return { success: false, error: '当前数据服务版本不支持获取会话' }
     try {
       // 使用 setImmediate 让事件循环有机会处理其他任务，避免长时间阻塞
       await new Promise(resolve => setImmediate(resolve))
@@ -2132,6 +2138,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessages) return { success: false, error: '当前数据服务版本不支持获取消息' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessages(this.handle, sessionId, limit, offset, outPtr)
@@ -2182,6 +2189,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessageCount) return { success: false, error: '当前数据服务版本不支持获取消息数量' }
     try {
       const outCount = [0]
       const result = this.wcdbGetMessageCount(this.handle, sessionId, outCount)
@@ -2201,6 +2209,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessageByServerId) return { success: false, error: '当前数据服务版本不支持按服务器 ID 查询消息' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessageByServerId(this.handle, sessionId, svrid, outPtr)
@@ -2237,6 +2246,7 @@ export class WcdbCore {
       return { success: true, counts: {} }
     }
 
+    if (!this.wcdbGetMessageCount) return { success: false, error: '当前数据服务版本不支持获取消息数量' }
     try {
       const counts: Record<string, number> = {}
       for (let i = 0; i < normalizedSessionIds.length; i += 1) {
@@ -3085,7 +3095,7 @@ export class WcdbCore {
 
       if (toFetch.length === 0) return { success: true, map: resultMap }
 
-      if (process.platform === 'darwin') {
+      if (this.wcdbExecQuery && (process.platform === 'darwin' || !this.wcdbGetDisplayNames)) {
         const inList = toFetch.map((u) => `'${u.replace(/'/g, "''")}'`).join(',')
         const sql = `SELECT * FROM contact WHERE username IN (${inList})`
         const q = await this.execQuery('contact', null, sql)
@@ -3114,6 +3124,12 @@ export class WcdbCore {
           }
         }
         return { success: true, map: resultMap }
+      }
+
+      if (!this.wcdbGetDisplayNames) {
+        const error = '当前数据服务版本不支持获取昵称'
+        if (Object.keys(resultMap).length > 0) return { success: true, map: resultMap, error }
+        return { success: false, error }
       }
 
       // 让出控制权，避免阻塞事件循环
@@ -3190,7 +3206,7 @@ export class WcdbCore {
         return { success: true, map: resultMap }
       }
 
-      if (process.platform === 'darwin') {
+      if (this.wcdbExecQuery && (process.platform === 'darwin' || !this.wcdbGetAvatarUrls)) {
         const inList = toFetch.map((u) => `'${u.replace(/'/g, "''")}'`).join(',')
         const sql = `SELECT * FROM contact WHERE username IN (${inList})`
         const q = await this.execQuery('contact', null, sql)
@@ -3216,6 +3232,12 @@ export class WcdbCore {
           }
         }
         return { success: true, map: resultMap }
+      }
+
+      if (!this.wcdbGetAvatarUrls) {
+        const error = '当前数据服务版本不支持获取头像'
+        if (Object.keys(resultMap).length > 0) return { success: true, map: resultMap, error }
+        return { success: false, error }
       }
 
       // 让出控制权，避免阻塞事件循环
@@ -3267,6 +3289,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetGroupMemberCount) return { success: false, error: '当前数据服务版本不支持获取群成员数量' }
     try {
       const outCount = [0]
       const result = this.wcdbGetGroupMemberCount(this.handle, chatroomId, outCount)
@@ -3284,6 +3307,9 @@ export class WcdbCore {
       return { success: false, error: 'WCDB 未连接' }
     }
     if (chatroomIds.length === 0) return { success: true, map: {} }
+    if (!this.wcdbGetGroupMemberCounts && !this.wcdbGetGroupMemberCount) {
+      return { success: false, error: '当前数据服务版本不支持获取群成员数量' }
+    }
     if (!this.wcdbGetGroupMemberCounts) {
       const map: Record<string, number> = {}
       for (const chatroomId of chatroomIds) {
@@ -3313,6 +3339,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetGroupMembers) return { success: false, error: '当前数据服务版本不支持获取群成员' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetGroupMembers(this.handle, chatroomId, outPtr)
@@ -3354,6 +3381,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessageTables) return { success: false, error: '当前数据服务版本不支持获取消息表' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessageTables(this.handle, sessionId, outPtr)
@@ -3396,6 +3424,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessageTableStats) return { success: false, error: '当前数据服务版本不支持获取消息表统计' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessageTableStats(this.handle, sessionId, outPtr)
@@ -3415,6 +3444,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetMessageMeta) return { success: false, error: '当前数据服务版本不支持获取消息元数据' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessageMeta(this.handle, dbPath, tableName, limit, offset, outPtr)
@@ -3435,7 +3465,7 @@ export class WcdbCore {
       return { success: false, error: 'WCDB 未连接' }
     }
     try {
-      if (process.platform === 'darwin') {
+      if (this.wcdbExecQuery && (process.platform === 'darwin' || !this.wcdbGetContact)) {
         const safe = String(username || '').replace(/'/g, "''")
         const sql = `SELECT * FROM contact WHERE username='${safe}' LIMIT 1`
         const q = await this.execQuery('contact', null, sql)
@@ -3449,6 +3479,7 @@ export class WcdbCore {
         return { success: true, contact: row }
       }
 
+      if (!this.wcdbGetContact) return { success: false, error: '当前数据服务版本不支持获取联系人' }
       const outPtr = [null as any]
       const result = this.wcdbGetContact(this.handle, username, outPtr)
       if (result !== 0 || !outPtr[0]) {
@@ -3749,6 +3780,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetAggregateStats) return { success: false, error: '当前数据服务版本不支持获取聚合统计' }
     try {
       const normalizedBegin = this.normalizeTimestamp(beginTimestamp)
       let normalizedEnd = this.normalizeTimestamp(endTimestamp)
@@ -4009,6 +4041,9 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbOpenMessageCursor || !this.wcdbFetchMessageBatch || !this.wcdbCloseMessageCursor) {
+      return { success: false, error: '当前数据服务版本不支持完整消息游标接口' }
+    }
     try {
       const outCursor = [0]
       let result = this.wcdbOpenMessageCursor(
@@ -4077,6 +4112,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbFetchMessageBatch) return { success: false, error: '当前数据服务版本不支持读取消息游标' }
     try {
       const outPtr = [null as any]
       const outHasMore = [0]
@@ -4097,6 +4133,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbCloseMessageCursor) return { success: false, error: '当前数据服务版本不支持关闭消息游标' }
     try {
       const result = this.wcdbCloseMessageCursor(this.handle, cursor)
       if (result !== 0) {
@@ -4189,6 +4226,7 @@ export class WcdbCore {
     if (!this.ensureReady()) {
       return { success: false, error: 'WCDB 未连接' }
     }
+    if (!this.wcdbGetEmoticonCdnUrl) return { success: false, error: '当前数据服务版本不支持获取表情 URL' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetEmoticonCdnUrl(this.handle, dbPath, md5, outPtr)
@@ -4247,6 +4285,7 @@ export class WcdbCore {
 
   async listMessageDbs(): Promise<{ success: boolean; data?: string[]; error?: string }> {
     if (!this.ensureReady()) return { success: false, error: 'WCDB 未连接' }
+    if (!this.wcdbListMessageDbs) return { success: false, error: '当前数据服务版本不支持获取消息数据库列表' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbListMessageDbs(this.handle, outPtr)
@@ -4262,6 +4301,7 @@ export class WcdbCore {
 
   async listMediaDbs(): Promise<{ success: boolean; data?: string[]; error?: string }> {
     if (!this.ensureReady()) return { success: false, error: 'WCDB 未连接' }
+    if (!this.wcdbListMediaDbs) return { success: false, error: '当前数据服务版本不支持获取媒体数据库列表' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbListMediaDbs(this.handle, outPtr)
@@ -4275,6 +4315,7 @@ export class WcdbCore {
     }
   } async getMessageById(sessionId: string, localId: number): Promise<{ success: boolean; message?: any; error?: string }> {
     if (!this.ensureReady()) return { success: false, error: 'WCDB 未连接' }
+    if (!this.wcdbGetMessageById) return { success: false, error: '当前数据服务版本不支持按本地 ID 查询消息' }
     try {
       const outPtr = [null as any]
       const result = this.wcdbGetMessageById(this.handle, sessionId, localId, outPtr)

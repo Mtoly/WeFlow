@@ -16,6 +16,7 @@
     "postinstall": "patch-package && electron-builder install-app-deps && node scripts/prepare-electron-runtime.cjs",
     "rebuild": "electron-rebuild",
     "dev": "node scripts/prepare-electron-runtime.cjs && vite",
+    "test:wcdb": "node --test scripts/check-wcdb-optional-exports.cjs",
     "typecheck:renderer": "tsc --noEmit -p tsconfig.json",
     "typecheck:electron": "tsc --noEmit -p tsconfig.node.json",
     "typecheck": "npm run typecheck:renderer && npm run typecheck:electron",
